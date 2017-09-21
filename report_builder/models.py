@@ -326,8 +326,10 @@ class Report(models.Model):
 
             # Check for special types such as isnull
             if filter_field.filter_type == "isnull":
-                if filter_field.filter_value in ["1", "True", "true"]: filter_ = {filter_string: True}
-                elif filter_field.filter_value in ["0", "False", "false"]: filter_ = {filter_string: False}
+                if filter_field.filter_value in ["0", "False", "false"]:
+                    filter_ = {filter_string: False}
+                elif filter_field.filter_value in ["1", "True", "true"]:
+                    filter_ = {filter_string: True}
             elif filter_field.filter_type == "in":
                 filter_ = {filter_string: filter_field.filter_value.split(',')}
             else:
