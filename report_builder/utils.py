@@ -195,18 +195,8 @@ def get_model_from_path_string(root_model, path):
         if path_section:
             try:
                 field = root_model._meta.get_field(path_section)
-                direct = field.concrete
+                if field.is_relation:
+                    root_model = field.related_model
             except FieldDoesNotExist:
                 return root_model
-            if direct:
-                if hasattr(field, 'related'):
-                    try:
-                        root_model = field.related.parent_model()
-                    except AttributeError:
-                        root_model = field.related.model
-            else:
-                if hasattr(field, 'related_model'):
-                    root_model = field.related_model
-                else:
-                    root_model = field.model
     return root_model
