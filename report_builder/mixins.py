@@ -14,7 +14,7 @@ from openpyxl.workbook import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font
-import csv
+import unicodecsv as csv
 import re
 from collections import namedtuple
 from decimal import Decimal
@@ -96,7 +96,7 @@ class DataExportMixin(object):
         title = generate_filename(title, '.csv')
         myfile = StringIO()
         sh = wb.active
-        c = csv.writer(myfile)
+        c = csv.writer(myfile, dialect="excel", encoding="cp1251", delimiter=';')
         for r in sh.rows:
             c.writerow([cell.value for cell in r])
         response = HttpResponse(
@@ -146,7 +146,7 @@ class DataExportMixin(object):
             title += '.csv'
         myfile = StringIO()
         sh = wb.active
-        c = csv.writer(myfile)
+        c = csv.writer(myfile, dialect="excel", encoding="cp1251", delimiter=';')
         for r in sh.rows:
             c.writerow([cell.value for cell in r])
         return myfile
